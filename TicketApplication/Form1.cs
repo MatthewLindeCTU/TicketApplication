@@ -42,7 +42,7 @@ namespace TicketApplication
             bool isDistanceValid = int.TryParse(distanceText, out distance);
 
             // 2. Check parsing success and logical ranges (Age/Distance cannot be negative)
-            if (!isAgeValid || age < 0 || age > 100) 
+            if (!isAgeValid || age < 0 || age > 100)
             {
                 MessageBox.Show("Please enter a valid age (0-100).", "Input Error");
                 return false;
@@ -73,7 +73,7 @@ namespace TicketApplication
 
             //4. Clear listbox output
             lbOutput.Items.Clear();
-            
+
         }
         public Form1()
         {
@@ -105,7 +105,7 @@ namespace TicketApplication
             // Validate inputs using the helper method
             if (!IsInputValid(txtAge.Text, txtDistance.Text, out int age, out int distance))
             {
-                return; 
+                return;
             }
 
             bool isFemale = rbFemale.Checked;
@@ -116,6 +116,11 @@ namespace TicketApplication
             // Display Result
             lbOutput.Items.Add($"Passenger: {txtName.Text}");
             lbOutput.Items.Add($"Final Price: {finalPrice:C}"); // :C automatically formats as local currency (R)
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
