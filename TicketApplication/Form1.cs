@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace TicketApplication
 {
     public partial class Form1 : Form
@@ -6,23 +8,24 @@ namespace TicketApplication
         {
             //Thandolwenkosi Gama - 20240351
             // Constant pricing rates
-            private const decimal PriceCatOne = 20;
-            private const decimal PriceCatTwo = 35;
-            private const decimal PriceCatThree = 50;
+            private const decimal PriceCatOne = 20m;
+            private const decimal PriceCatTwo = 35m;
+            private const decimal PriceCatThree = 50m;
 
             public static decimal CalculatePrice(int age, int distance, string category, bool isFemale)
             {
                 //Thandolwenkosi Gama - 20240351
                 // Rule 1: If Age is smaller than 12 , ticket is free
-                if (age < 12) return 0;
+                if (age < 12) return 0m;
 
                 // Calculate base price based on category
-                decimal price = 0;
+                decimal price = 0m;
+                
                 switch (category)
                 {
-                    case "Category One": price = distance * PriceCatOne; break;
-                    case "Category Two": price = distance * PriceCatTwo; break;
-                    case "Category Three": price = distance * PriceCatThree; break;
+                    case "One - R20 per km": price = distance * PriceCatOne; break;
+                    case "Two - R35 per km": price = distance * PriceCatTwo; break;
+                    case "Three - R50 per km": price = distance * PriceCatThree; break;
                 }
 
                 // Rule 2: If user is a female , they get a 50% discount
@@ -108,14 +111,23 @@ namespace TicketApplication
                 return;
             }
 
+            // Clear previous output so the new calculation is clean
+            lbOutput.Items.Clear();
+
             bool isFemale = rbFemale.Checked;
             string category = cmbCategory.Text;
+           
 
             decimal finalPrice = TicketCalculator.CalculatePrice(age, distance, category, isFemale);
 
             // Display Result
             lbOutput.Items.Add($"Passenger: {txtName.Text}");
-            lbOutput.Items.Add($"Final Price: {finalPrice:C}"); // :C automatically formats as local currency (R)
+            lbOutput.Items.Add($"Age: {age}"); 
+            lbOutput.Items.Add($"Gender: {(isFemale ? "Female" : "Male")}");
+            lbOutput.Items.Add($"Category: {category}");
+            lbOutput.Items.Add($"Distance: {distance} km");
+            lbOutput.Items.Add($"Final Price: {finalPrice.ToString("C", new CultureInfo("en-ZA"))}"); // forces automatically format to local currency (R)
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
