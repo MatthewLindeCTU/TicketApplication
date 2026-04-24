@@ -151,6 +151,7 @@
             btnCalculate.TabIndex = 11;
             btnCalculate.Text = "Calculate";
             btnCalculate.UseVisualStyleBackColor = true;
+            btnCalculate.Click += btnCalculate_Click;
             // 
             // btnExit
             // 
@@ -160,6 +161,7 @@
             btnExit.TabIndex = 12;
             btnExit.Text = "Exit";
             btnExit.UseVisualStyleBackColor = true;
+            btnExit.Click += btnExit_Click;
             // 
             // btnReset
             // 
@@ -169,6 +171,7 @@
             btnReset.TabIndex = 13;
             btnReset.Text = "Reset";
             btnReset.UseVisualStyleBackColor = true;
+            btnReset.Click += btnReset_Click;
             // 
             // cmbCategory
             // 

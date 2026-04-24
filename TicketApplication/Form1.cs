@@ -2,9 +2,120 @@ namespace TicketApplication
 {
     public partial class Form1 : Form
     {
+        public class TicketCalculator
+        {
+            //Thandolwenkosi Gama - 20240351
+            // Constant pricing rates
+            private const decimal PriceCatOne = 20;
+            private const decimal PriceCatTwo = 35;
+            private const decimal PriceCatThree = 50;
+
+            public static decimal CalculatePrice(int age, int distance, string category, bool isFemale)
+            {
+                //Thandolwenkosi Gama - 20240351
+                // Rule 1: If Age is smaller than 12 , ticket is free
+                if (age < 12) return 0;
+
+                // Calculate base price based on category
+                decimal price = 0;
+                switch (category)
+                {
+                    case "Category One": price = distance * PriceCatOne; break;
+                    case "Category Two": price = distance * PriceCatTwo; break;
+                    case "Category Three": price = distance * PriceCatThree; break;
+                }
+
+                // Rule 2: If user is a female , they get a 50% discount
+                if (isFemale)
+                {
+                    price *= 0.50m;
+                }
+
+                return price;
+            }
+        }
+        private bool IsInputValid(string ageText, string distanceText, out int age, out int distance)
+        {
+            //Thandolwenkosi Gama - 20240351
+            // 1. Try to parse inputs to integers
+            bool isAgeValid = int.TryParse(ageText, out age);
+            bool isDistanceValid = int.TryParse(distanceText, out distance);
+
+            // 2. Check parsing success and logical ranges (Age/Distance cannot be negative)
+            if (!isAgeValid || age < 0 || age > 100) 
+            {
+                MessageBox.Show("Please enter a valid age (0-100).", "Input Error");
+                return false;
+            }
+
+            if (!isDistanceValid || distance <= 0)
+            {
+                MessageBox.Show("Please enter a valid positive distance.", "Input Error");
+                return false;
+            }
+
+            return true;
+        }
+        private void ResetForm()
+        {
+            //Thandolwenkosi Gama - 20240351
+            // 1. Clear textboxes
+            txtName.Text = string.Empty;
+            txtAge.Text = string.Empty;
+            txtDistance.Text = string.Empty;
+
+            // 2. uncheck radio buttons
+            rbMale.Checked = false;
+            rbFemale.Checked = false;
+
+            // 3. Clear combo box selection
+            cmbCategory.SelectedIndex = -1;
+
+            //4. Clear listbox output
+            lbOutput.Items.Clear();
+            
+        }
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            //Thandolwenkosi Gama - 20240351
+            // Ask for confirmation before exiting
+            DialogResult result = MessageBox.Show("Are you sure you want to exit?",
+                "Confirm Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            //Thandolwenkosi Gama - 20240351
+            ResetForm();
+        }
+
+        private void btnCalculate_Click(object sender, EventArgs e)
+        {
+            //Thandolwenkosi Gama - 20240351
+            // Validate inputs using the helper method
+            if (!IsInputValid(txtAge.Text, txtDistance.Text, out int age, out int distance))
+            {
+                return; 
+            }
+
+            bool isFemale = rbFemale.Checked;
+            string category = cmbCategory.Text;
+
+            decimal finalPrice = TicketCalculator.CalculatePrice(age, distance, category, isFemale);
+
+            // Display Result
+            lbOutput.Items.Add($"Passenger: {txtName.Text}");
+            lbOutput.Items.Add($"Final Price: {finalPrice:C}"); // :C automatically formats as local currency (R)
         }
     }
 }
